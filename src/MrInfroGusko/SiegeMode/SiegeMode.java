@@ -6,16 +6,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.ChatColor;
 
+import net.milkbowl.vault.permission.Permission;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -31,9 +31,7 @@ public class SiegeMode
   {
     setupPermission();
     getConfig().options().copyDefaults(true);
-    getConfig().options().header("Configuration explanation below ~ \n\nALL TIMES ARE IN SECONDS!\nInitial delay is the time before the plugin starts starting \nthe commands in the schedule. This is in place so that other\nplugins have the time to start. You could set this to 0, \nbut errors may occur.\nMake sure the Command1, Command2, Command3 etc. are numbered\nin succession. This will ensure they all load.\n\nAlso make sure you enter a command, heh.\n\n1 minute = 60 seconds. 1 hour = 3600 seconds\nHOUR in 24-hour format!\nSpecificTime commands ALWAYS repeat!\n");
-    
-    saveConfig();
+       saveConfig();
     getConfig();
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
@@ -63,7 +61,8 @@ public class SiegeMode
   
   public void startSchedule()
   {
-    int counter = 1;int started = 0;
+    int counter = 1;
+    int started = 0;
     while (getConfig().contains("CommandSchedule.Command" + counter))
     {
       log.log(Level.INFO, "getConfig contains CommandSchedule.Command{0}", Integer.valueOf(counter));
@@ -136,7 +135,7 @@ public class SiegeMode
     {
       if (args.length == 0)
       {
-        msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "To see a list of commands type: /csc help", new Object[0]);
+        msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "To see a list of commands type: /sm help", new Object[0]);
         return true;
       }
       if (!hasPerm(sender, "SiegeMode.use"))
@@ -160,7 +159,7 @@ public class SiegeMode
     if (args[0].equalsIgnoreCase("help"))
     {
       msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "Commands:", new Object[] { desc.getVersion() });
-      msg(sender, ChatColor.WHITE + "* /csc reload", new Object[0]);
+      msg(sender, ChatColor.WHITE + "* /sm reload", new Object[0]);
       return true;
     }
     return false;
@@ -203,7 +202,7 @@ public class SiegeMode
       log.info(msg.replaceAll("&([0-9a-fk-or])", ""));
     }
     if ((sender instanceof Player)) {
-      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "§$1"));
+      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "ï¿½$1"));
     }
   }
   
