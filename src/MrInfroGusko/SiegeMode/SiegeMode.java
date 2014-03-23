@@ -31,12 +31,13 @@ public class SiegeMode
   {
     setupPermission();
     getConfig().options().copyDefaults(true);
-       saveConfig();
+    saveConfig();
     getConfig();
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
     log.log(Level.INFO, "[{0}] Command execution will start in {1} seconds.", new Object[] { pdfFile.getName(), Integer.valueOf(getConfig().getInt("InitialDelay")) });
     initialDelay();
+    getDayOfTheWeek();
   }
   
   public void onDisable()
@@ -220,5 +221,32 @@ public class SiegeMode
       Offset = 86400 + time_wanted - time_in_seconds;
     }
     return Offset;
+  }
+  
+  public int getDayOfTheWeek()
+  {
+	  calendar.setFirstDayOfWeek(Calendar.MONDAY);
+	  int DayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK);
+	  String DayOfWeek = "";
+	  switch (DayOfTheWeek)
+	  {
+	  	case 0:
+	  		DayOfWeek = "MONDAY";
+	  	case 1:
+	  		DayOfWeek = "TUESDAY";
+	  	case 2:
+	  		DayOfWeek = "WEDNESDAY";
+	  	case 3:
+	  		DayOfWeek = "THURSDAY";
+	  	case 4:
+	  		DayOfWeek = "FRIDAY";
+	  	case 5:
+	  		DayOfWeek = "SATURDAY";
+	  	case 6:
+	  		DayOfWeek = "SUNDAY";
+	  }
+	  log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfWeek);
+	  return DayOfTheWeek;	  
+	  
   }
 }
