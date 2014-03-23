@@ -1,6 +1,6 @@
 name: SiegeMode
-main: MrInfroGusko.ConsoleScheduler.ConsoleScheduler
-version: 1.2
+main: MrInfroGusko.SiegeMode.SiegeMode
+version: 0.1
 author: MrInfro, Gusko
 
 commands:
