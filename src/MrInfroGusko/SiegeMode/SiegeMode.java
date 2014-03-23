@@ -63,19 +63,19 @@ public class SiegeMode
   {
     int counter = 1;
     int started = 0;
-    while (getConfig().contains("CommandSchedule.Command" + counter))
+    while (getConfig().contains("SiegeSchedule.Command" + counter))
     {
-      log.log(Level.INFO, "getConfig contains CommandSchedule.Command{0}", Integer.valueOf(counter));
-      if ((!getConfig().contains("CommandSchedule.Command" + counter + ".After")) && (!getConfig().getBoolean("CommandSchedule.Command" + counter + ".SpecificTime", false)))
+      log.log(Level.INFO, "getConfig contains SiegeSchedule.Command{0}", Integer.valueOf(counter));
+      if ((!getConfig().contains("SiegeSchedule.Command" + counter + ".After")) && (!getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)))
       {
-        log.log(Level.INFO, "[CommandScheduler] Command{0} does not have an After value, defaulting to 0.", Integer.valueOf(counter));
-        getConfig().set("CommandSchedule.Command" + counter + ".After", Integer.valueOf(0));
+        log.log(Level.INFO, "[SiegeScheduler] Command{0} does not have an After value, defaulting to 0.", Integer.valueOf(counter));
+        getConfig().set("SiegeSchedule.Command" + counter + ".After", Integer.valueOf(0));
       }
-      if (getConfig().getBoolean("CommandSchedule.Command" + counter + ".SpecificTime", false)) {
+      if (getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)) {
         timeTask(counter);
-      } else if (getConfig().getBoolean("CommandSchedule.Command" + counter + ".Repeat"))
+      } else if (getConfig().getBoolean("SiegeSchedule.Command" + counter + ".Repeat"))
       {
-        if (!getConfig().contains("CommandSchedule.Command" + counter + ".Interval")) {
+        if (!getConfig().contains("SiegeSchedule.Command" + counter + ".Interval")) {
           log.log(Level.INFO, "[SiegeMode] Command{0} has Repeat: true, but Interval is not set! Ignoring this command.", Integer.valueOf(counter));
         } else {
           repeatingTask(counter);
@@ -98,7 +98,7 @@ public class SiegeMode
       {
         SiegeMode.this.runCommand(counter);
       }
-    }, getConfig().getInt("CommandSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("CommandSchedule.Command" + counter + ".Interval") * 20L);
+    }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("SiegeSchedule.Command" + counter + ".Interval") * 20L);
   }
   
   public void nonrepeatingTask(final int counter)
@@ -109,7 +109,7 @@ public class SiegeMode
       {
         SiegeMode.this.runCommand(counter);
       }
-    }, getConfig().getInt("CommandSchedule.Command" + counter + ".After", 0) * 20L);
+    }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L);
   }
   
   public void timeTask(final int counter)
@@ -125,13 +125,13 @@ public class SiegeMode
   
   public void runCommand(int counter)
   {
-    getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("CommandSchedule.Command" + counter + ".Command"));
+    getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.Command" + counter + ".Command"));
   }
   
   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
   {
     PluginDescriptionFile desc = getDescription();
-    if (cmd.getName().equalsIgnoreCase("csc"))
+    if (cmd.getName().equalsIgnoreCase("sm"))
     {
       if (args.length == 0)
       {
@@ -202,7 +202,7 @@ public class SiegeMode
       log.info(msg.replaceAll("&([0-9a-fk-or])", ""));
     }
     if ((sender instanceof Player)) {
-      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "ยง$1"));
+      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "ง$1"));
     }
   }
   
@@ -212,7 +212,7 @@ public class SiegeMode
     this.calendar.setTime(this.date);
     
     int time_in_seconds = this.calendar.get(11) * 3600 + this.calendar.get(12) * 60 + this.calendar.get(13);
-    int time_wanted = getConfig().getInt("CommandSchedule.Command" + counter + ".Hour", 0) * 3600 + getConfig().getInt("CommandSchedule.Command" + counter + ".Minute", 0) * 60 + getConfig().getInt("CommandSchedule.Command" + counter + ".Second", 0);
+    int time_wanted = getConfig().getInt("SiegeSchedule.Command" + counter + ".Hour", 0) * 3600 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Minute", 0) * 60 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Second", 0);
     int Offset;
     if (time_wanted >= time_in_seconds) {
       Offset = time_wanted - time_in_seconds;

@@ -1,5 +1,5 @@
 name: SiegeMode
-main: MrInfroGusko.SiegeMode.SiegeMode
+main: MrInfroGusko.SiegeScheduler.SiegeScheduler
 version: 0.1
 author: MrInfro, Gusko
 
