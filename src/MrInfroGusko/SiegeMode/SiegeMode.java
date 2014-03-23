@@ -202,7 +202,7 @@ public class SiegeMode
       log.info(msg.replaceAll("&([0-9a-fk-or])", ""));
     }
     if ((sender instanceof Player)) {
-      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "�$1"));
+      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "§$1"));
     }
   }
   
