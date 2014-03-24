@@ -3,7 +3,7 @@ package MrInfroGusko.SiegeMode;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+//import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +25,7 @@ public class SiegeMode
   static final Logger log = Logger.getLogger("Minecraft");
   public static Permission permission = null;
   Date date = new Date();
-  Calendar calendar = GregorianCalendar.getInstance();
+  Calendar calendar = Calendar.getInstance();
   
   public void onEnable()
   {
@@ -36,8 +36,9 @@ public class SiegeMode
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
     log.log(Level.INFO, "[{0}] Command execution will start in {1} seconds.", new Object[] { pdfFile.getName(), Integer.valueOf(getConfig().getInt("InitialDelay")) });
-    initialDelay();
     getDayOfTheWeek();
+    initialDelay();
+
   }
   
   public void onDisable()
@@ -225,27 +226,28 @@ public class SiegeMode
   
   public int getDayOfTheWeek()
   {
-	  calendar.setFirstDayOfWeek(Calendar.MONDAY);
+	  calendar.setFirstDayOfWeek(calendar.getFirstDayOfWeek());
 	  int DayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK);
 	  String DayOfWeek = "";
 	  switch (DayOfTheWeek)
 	  {
-	  	case 0:
-	  		DayOfWeek = "MONDAY";
-	  	case 1:
-	  		DayOfWeek = "TUESDAY";
 	  	case 2:
-	  		DayOfWeek = "WEDNESDAY";
+	  		DayOfWeek = "MONDAY";
 	  	case 3:
-	  		DayOfWeek = "THURSDAY";
+	  		DayOfWeek = "TUESDAY";
 	  	case 4:
-	  		DayOfWeek = "FRIDAY";
+	  		DayOfWeek = "WEDNESDAY";
 	  	case 5:
-	  		DayOfWeek = "SATURDAY";
+	  		DayOfWeek = "THURSDAY";
 	  	case 6:
+	  		DayOfWeek = "FRIDAY";
+	  	case 7:
+	  		DayOfWeek = "SATURDAY";
+	  	case 1:
 	  		DayOfWeek = "SUNDAY";
 	  }
 	  log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfWeek);
+	  log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfTheWeek);
 	  return DayOfTheWeek;	  
 	  
   }
