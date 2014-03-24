@@ -36,7 +36,8 @@ public class SiegeMode
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
     log.log(Level.INFO, "[{0}] Command execution will start in {1} seconds.", new Object[] { pdfFile.getName(), Integer.valueOf(getConfig().getInt("InitialDelay")) });
-    getDayOfTheWeek();
+    String DayOfWeek = getDayOfTheWeek();
+    log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfWeek);
     initialDelay();
 
   }
@@ -224,7 +225,7 @@ public class SiegeMode
     return Offset;
   }
   
-  public int getDayOfTheWeek()
+  public String getDayOfTheWeek()
   {
 	  calendar.setFirstDayOfWeek(calendar.getFirstDayOfWeek());
 	  int DayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -233,22 +234,28 @@ public class SiegeMode
 	  {
 	  	case 2:
 	  		DayOfWeek = "MONDAY";
+	  		break;
 	  	case 3:
 	  		DayOfWeek = "TUESDAY";
+	  		break;
 	  	case 4:
 	  		DayOfWeek = "WEDNESDAY";
+	  		break;
 	  	case 5:
 	  		DayOfWeek = "THURSDAY";
+	  		break;
 	  	case 6:
 	  		DayOfWeek = "FRIDAY";
+	  		break;
 	  	case 7:
 	  		DayOfWeek = "SATURDAY";
+	  		break;
 	  	case 1:
 	  		DayOfWeek = "SUNDAY";
+	  		break;
 	  }
-	  log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfWeek);
-	  log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfTheWeek);
-	  return DayOfTheWeek;	  
+	  //log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfTheWeek);
+	  return DayOfWeek;	  
 	  
   }
 }
