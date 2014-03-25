@@ -140,8 +140,11 @@ public class SiegeMode
   
   public void runCommand(int counter)
   {
-	int subCounter = 1;
-    getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.City" + counter + ".Command" + subCounter));
+      int subCounter = 1;
+      while (getConfig().contains("SiegeSchedule.City" + counter + ".Command" + subCounter)) {
+      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.City" + counter + ".Command" + subCounter));
+      subCounter++;
+      }
   }
   
   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
@@ -218,7 +221,7 @@ public class SiegeMode
       log.info(msg.replaceAll("&([0-9a-fk-or])", ""));
     }
     if ((sender instanceof Player)) {
-      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "§$1"));
+      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "ï¿½$1"));
     }
   }
   
