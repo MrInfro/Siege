@@ -3,8 +3,6 @@ package MrInfroGusko.SiegeMode;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
 //import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +17,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.Collection;
 
 
 public class SiegeMode
@@ -39,8 +36,9 @@ public class SiegeMode
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
     log.log(Level.INFO, "[{0}] Command execution will start in {1} seconds.", new Object[] { pdfFile.getName(), Integer.valueOf(getConfig().getInt("InitialDelay")) });
-    String DayOfWeek = getDayOfTheWeek();
-    log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfWeek);
+    int DayOfWeek = getDayOfWeek();
+    String parsedDayOfWeek = parseDayOfWeek(DayOfWeek);
+    log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", parsedDayOfWeek);
     initialDelay();
 
   }
@@ -69,9 +67,9 @@ public class SiegeMode
   {
     int counter = 1;
     int started = 0;
-    List<String>commands = new ArrayList<String>();
-    while (getConfig().contains("SiegeSchedule.Command" + counter))
+    while (getConfig().contains("SiegeSchedule.startCity" + counter))
     {
+    	/*
       log.log(Level.INFO, "getConfig contains SiegeSchedule.Command{0}", Integer.valueOf(counter));
       if ((!getConfig().contains("SiegeSchedule.Command" + counter + ".After")) && (!getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)))
       {
@@ -85,16 +83,27 @@ public class SiegeMode
         if (!getConfig().contains("SiegeSchedule.Command" + counter + ".Interval")) {
           log.log(Level.INFO, "[SiegeMode] Command{0} has Repeat: true, but Interval is not set! Ignoring this command.", Integer.valueOf(counter));
         } else {
-          repeatingTask(counter, commands);
+          repeatingTask(counter);
         }
       }
+      */
+    	
+      timeTask(counter);
       started++;
       counter++;
     }
+    
+    counter = 1;
+    while (getConfig().contains("SiegeSchedule.endCity" + counter))
+    {
+    	timeTask(counter);
+        started++;
+        counter++;
+    }
     log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
   }
-  
-  public void repeatingTask(final int counter, Collection<String> commandList)
+  /*
+  public void repeatingTask(final int counter)
   {
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
     {
@@ -103,7 +112,7 @@ public class SiegeMode
         SiegeMode.this.runCommand(counter);
       }
     }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("SiegeSchedule.Command" + counter + ".Interval") * 20L);
-  }
+  }*/
   
   /*
   public void nonrepeatingTask(final int counter)
@@ -126,12 +135,13 @@ public class SiegeMode
       {
         SiegeMode.this.runCommand(counter);
       }
-    }, getOffset(counter) * 20L, 1728000L);
+    }, getTime(counter) * 20L, 1728000L);
   }
   
   public void runCommand(int counter)
   {
-    getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.Command" + counter + ".Command"));
+	int subCounter = 1;
+    getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.City" + counter + ".Command" + subCounter));
   }
   
   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
@@ -212,53 +222,57 @@ public class SiegeMode
     }
   }
   
-
-  public int getOffset(int counter)
+  public int getTime(int counter)
   {
     this.calendar.setTime(this.date);
     
     int time_in_seconds = this.calendar.get(11) * 3600 + this.calendar.get(12) * 60 + this.calendar.get(13);
     int time_wanted = getConfig().getInt("SiegeSchedule.Command" + counter + ".Hour", 0) * 3600 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Minute", 0) * 60 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Second", 0);
-    int Offset;
+    int time;
     if (time_wanted >= time_in_seconds) {
-      Offset = time_wanted - time_in_seconds;
+      time = time_wanted - time_in_seconds;
     } else {
-      Offset = 86400 + time_wanted - time_in_seconds;
+      time = 86400 + time_wanted - time_in_seconds;
     }
-    return Offset;
+    return time;
   }
   
-  public String getDayOfTheWeek()
+  public int getDayOfWeek()
   {
 	  calendar.setFirstDayOfWeek(calendar.getFirstDayOfWeek());
 	  int DayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK);
-	  String DayOfWeek = "";
-	  switch (DayOfTheWeek)
+
+	  return DayOfTheWeek;	  
+	  
+  }
+  
+  public String parseDayOfWeek(int DayOfWeek)
+  {
+	  String parsedDayOfWeek = "";
+	  switch (DayOfWeek)
 	  {
 	  	case 2:
-	  		DayOfWeek = "MONDAY";
+	  		parsedDayOfWeek = "MONDAY";
 	  		break;
 	  	case 3:
-	  		DayOfWeek = "TUESDAY";
+	  		parsedDayOfWeek = "TUESDAY";
 	  		break;
 	  	case 4:
-	  		DayOfWeek = "WEDNESDAY";
+	  		parsedDayOfWeek = "WEDNESDAY";
 	  		break;
 	  	case 5:
-	  		DayOfWeek = "THURSDAY";
+	  		parsedDayOfWeek = "THURSDAY";
 	  		break;
 	  	case 6:
-	  		DayOfWeek = "FRIDAY";
+	  		parsedDayOfWeek = "FRIDAY";
 	  		break;
 	  	case 7:
-	  		DayOfWeek = "SATURDAY";
+	  		parsedDayOfWeek = "SATURDAY";
 	  		break;
 	  	case 1:
-	  		DayOfWeek = "SUNDAY";
+	  		parsedDayOfWeek = "SUNDAY";
 	  		break;
 	  }
-	  //log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", DayOfTheWeek);
-	  return DayOfWeek;	  
-	  
+	  return parsedDayOfWeek;
   }
 }
