@@ -68,8 +68,38 @@ public class SiegeMode
     int counter = 1;
     int started = 0;
     while (getConfig().contains("SiegeSchedule.startCity" + counter))
+    {    
+        if (getConfig().getInt("SiegeSchedule.City" + counter + ".Day")==getDayOfWeek()){
+            timeTask(counter);
+            // log entry for debug purposes mostly
+            log.log(Level.INFO, "[SiegeMode] Nacten zacatek siege pro city" + counter);
+        }
+      started++;
+      counter++;
+    }
+    
+    counter = 1;
+    while (getConfig().contains("SiegeSchedule.endCity" + counter))
     {
-    	/*
+        if (getConfig().getInt("SiegeSchedule.City" + counter + ".Day")==getDayOfWeek()){
+            timeTask(counter);
+            // log entry for debug purposes mostly
+            log.log(Level.INFO, "[SiegeMode] Nacten konec siege pro city" + counter);
+        }
+        started++;
+        counter++;
+    }
+    log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
+  }
+  
+  // OLD (kept for record, delete once done)
+  /*public void startSchedule()
+  {
+    int counter = 1;
+    int started = 0;
+    while (getConfig().contains("SiegeSchedule.startCity" + counter))
+    {
+    	
       log.log(Level.INFO, "getConfig contains SiegeSchedule.Command{0}", Integer.valueOf(counter));
       if ((!getConfig().contains("SiegeSchedule.Command" + counter + ".After")) && (!getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)))
       {
@@ -86,7 +116,7 @@ public class SiegeMode
           repeatingTask(counter);
         }
       }
-      */
+      
     	
       timeTask(counter);
       started++;
@@ -102,7 +132,7 @@ public class SiegeMode
     }
     log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
   }
-  /*
+  
   public void repeatingTask(final int counter)
   {
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
@@ -112,9 +142,9 @@ public class SiegeMode
         SiegeMode.this.runCommand(counter);
       }
     }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("SiegeSchedule.Command" + counter + ".Interval") * 20L);
-  }*/
+  }
   
-  /*
+  
   public void nonrepeatingTask(final int counter)
   {
     getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
