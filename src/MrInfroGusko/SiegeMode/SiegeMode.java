@@ -70,7 +70,7 @@ public class SiegeMode
     while (getConfig().contains("SiegeSchedule.startCity" + counter))
     {    
         if (getConfig().getInt("SiegeSchedule.startCity" + counter + ".Day")==getDayOfWeek()){
-            timeTask(counter);
+            timeTask(counter, "startCity");
             // log entry for debug purposes mostly
             log.log(Level.INFO, "[SiegeMode] Nacten zacatek siege pro city" + counter);
         }
@@ -82,7 +82,7 @@ public class SiegeMode
     while (getConfig().contains("SiegeSchedule.endCity" + counter))
     {
         if (getConfig().getInt("SiegeSchedule.endCity" + counter + ".Day")==getDayOfWeek()){
-            timeTask(counter);
+            timeTask(counter, "endCity");
             // log entry for debug purposes mostly
             log.log(Level.INFO, "[SiegeMode] Nacten konec siege pro city" + counter);
         }
@@ -157,7 +157,7 @@ public class SiegeMode
   }
   */
   
-  public void timeTask(final int counter)
+  public void timeTask(final int counter, final String cityType)
   {
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
     {
@@ -165,7 +165,7 @@ public class SiegeMode
       {
         SiegeMode.this.runCommand(counter);
       }
-    }, getTime(counter) * 20L, 1728000L);
+    }, getTime(counter, cityType) * 20L, 1728000L);
   }
   
   public void runCommand(int counter)
@@ -256,16 +256,16 @@ public class SiegeMode
       log.info(msg.replaceAll("&([0-9a-fk-or])", ""));
     }
     if ((sender instanceof Player)) {
-      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "�$1"));
+      sender.sendMessage(msg.replaceAll("&([0-9a-fk-or])", "§$1"));
     }
   }
   
-  public int getTime(int counter)
+  public int getTime(int counter, String cityType)
   {
     this.calendar.setTime(this.date);
     
     int time_in_seconds = this.calendar.get(11) * 3600 + this.calendar.get(12) * 60 + this.calendar.get(13);
-    int time_wanted = getConfig().getInt("SiegeSchedule.Command" + counter + ".Hour", 0) * 3600 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Minute", 0) * 60 + getConfig().getInt("SiegeSchedule.Command" + counter + ".Second", 0);
+    int time_wanted = getConfig().getInt("SiegeSchedule." + cityType + counter + ".Hour", 0) * 3600 + getConfig().getInt("SiegeSchedule." + cityType + counter + ".Minute", 0) * 60 + getConfig().getInt("SiegeSchedule." + cityType + counter + ".Second", 0);
     int time;
     if (time_wanted >= time_in_seconds) {
       time = time_wanted - time_in_seconds;
