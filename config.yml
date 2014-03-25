@@ -10,4 +10,6 @@ City1:
 
     Second: 0
 
-    Command: say dete do pici
+    Command1: say dete do pici
+    
+    Command2: shutdown
