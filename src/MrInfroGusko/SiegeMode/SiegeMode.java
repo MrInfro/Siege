@@ -69,7 +69,7 @@ public class SiegeMode
     int started = 0;
     while (getConfig().contains("SiegeSchedule.startCity" + counter))
     {    
-        if (getConfig().getInt("SiegeSchedule.City" + counter + ".Day")==getDayOfWeek()){
+        if (getConfig().getInt("SiegeSchedule.startCity" + counter + ".Day")==getDayOfWeek()){
             timeTask(counter);
             // log entry for debug purposes mostly
             log.log(Level.INFO, "[SiegeMode] Nacten zacatek siege pro city" + counter);
@@ -81,7 +81,7 @@ public class SiegeMode
     counter = 1;
     while (getConfig().contains("SiegeSchedule.endCity" + counter))
     {
-        if (getConfig().getInt("SiegeSchedule.City" + counter + ".Day")==getDayOfWeek()){
+        if (getConfig().getInt("SiegeSchedule.endCity" + counter + ".Day")==getDayOfWeek()){
             timeTask(counter);
             // log entry for debug purposes mostly
             log.log(Level.INFO, "[SiegeMode] Nacten konec siege pro city" + counter);
@@ -171,8 +171,13 @@ public class SiegeMode
   public void runCommand(int counter)
   {
       int subCounter = 1;
-      while (getConfig().contains("SiegeSchedule.City" + counter + ".Command" + subCounter)) {
-      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.City" + counter + ".Command" + subCounter));
+      while (getConfig().contains("SiegeSchedule.startCity" + counter + ".Command" + subCounter)) {
+      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.startCity" + counter + ".Command" + subCounter));
+      subCounter++;
+      }
+      subCounter = 1;
+      while (getConfig().contains("SiegeSchedule.endCity" + counter + ".Command" + subCounter)) {
+      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.endCity" + counter + ".Command" + subCounter));
       subCounter++;
       }
   }
