@@ -3,6 +3,8 @@ package MrInfroGusko.SiegeMode;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 //import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +19,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Collection;
 
 
 public class SiegeMode
@@ -66,6 +69,7 @@ public class SiegeMode
   {
     int counter = 1;
     int started = 0;
+    List<String>commands = new ArrayList<String>();
     while (getConfig().contains("SiegeSchedule.Command" + counter))
     {
       log.log(Level.INFO, "getConfig contains SiegeSchedule.Command{0}", Integer.valueOf(counter));
@@ -81,11 +85,8 @@ public class SiegeMode
         if (!getConfig().contains("SiegeSchedule.Command" + counter + ".Interval")) {
           log.log(Level.INFO, "[SiegeMode] Command{0} has Repeat: true, but Interval is not set! Ignoring this command.", Integer.valueOf(counter));
         } else {
-          repeatingTask(counter);
+          repeatingTask(counter, commands);
         }
-      }
-      else {
-        nonrepeatingTask(counter);
       }
       started++;
       counter++;
@@ -93,7 +94,7 @@ public class SiegeMode
     log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
   }
   
-  public void repeatingTask(final int counter)
+  public void repeatingTask(final int counter, Collection<String> commandList)
   {
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
     {
@@ -104,6 +105,7 @@ public class SiegeMode
     }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("SiegeSchedule.Command" + counter + ".Interval") * 20L);
   }
   
+  /*
   public void nonrepeatingTask(final int counter)
   {
     getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
@@ -114,6 +116,7 @@ public class SiegeMode
       }
     }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L);
   }
+  */
   
   public void timeTask(final int counter)
   {
