@@ -163,21 +163,17 @@ public class SiegeMode
     {
       public void run()
       {
-        SiegeMode.this.runCommand(counter);
+        SiegeMode.this.runCommand(counter, cityType);
       }
     }, getTime(counter, cityType) * 20L, 1728000L);
   }
   
-  public void runCommand(int counter)
+  public void runCommand(int counter, String cityType)
   {
       int subCounter = 1;
-      while (getConfig().contains("SiegeSchedule.startCity" + counter + ".Command" + subCounter)) {
-      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.startCity" + counter + ".Command" + subCounter));
-      subCounter++;
-      }
-      subCounter = 1;
-      while (getConfig().contains("SiegeSchedule.endCity" + counter + ".Command" + subCounter)) {
-      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule.endCity" + counter + ".Command" + subCounter));
+
+      while (getConfig().contains("SiegeSchedule." + cityType + counter + ".Command" + subCounter)) {
+      getServer().dispatchCommand(getServer().getConsoleSender(), getConfig().getString("SiegeSchedule." + cityType + counter + ".Command" + subCounter));
       subCounter++;
       }
   }
