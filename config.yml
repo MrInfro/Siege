@@ -1,13 +1,13 @@
 InitialDelay: 5
 SiegeSchedule:
-startCity1:
+  startCity1:
     Day: 3
     Hour: 21
     Minute: 30
     Second: 0
     Command1: say dete do pici
     Command2: say tak jo no
-endCity1:
+  endCity1:
     Day: 3
     Hour: 21
     Minute: 32
