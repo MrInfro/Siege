@@ -1,13 +1,13 @@
 InitialDelay: 5
 SiegeSchedule:
-  startCity1:  //Commands on siege start
-    Day: 3  //Numbers here represents days, week starts with 1 - sunday
+  startCity1:  
+    Day: 3  
     Hour: 21
     Minute: 30
     Second: 0
     Command1: say Siege on City1 starts now!
     Command2: say placeholder
-  endCity1:  //Commands on siege end
+  endCity1:  
     Day: 3
     Hour: 21
     Minute: 32
