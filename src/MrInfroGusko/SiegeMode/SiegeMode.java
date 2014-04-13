@@ -3,7 +3,7 @@ package MrInfroGusko.SiegeMode;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
-//import java.util.GregorianCalendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,14 +25,12 @@ public class SiegeMode
   static final Logger log = Logger.getLogger("Minecraft");
   public static Permission permission = null;
   Date date = new Date();
-  Calendar calendar = Calendar.getInstance();
+  Calendar calendar = GregorianCalendar.getInstance();
   
   public void onEnable()
   {
     setupPermission();
     this.saveDefaultConfig();
-    //getConfig().options().copyDefaults(true);
-    //saveConfig();
     getConfig();
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
@@ -41,7 +39,6 @@ public class SiegeMode
     String parsedDayOfWeek = parseDayOfWeek(DayOfWeek);
     log.log(Level.INFO, "[SiegeMode] The day of the week is {0}", parsedDayOfWeek);
     initialDelay();
-
   }
   
   public void onDisable()
@@ -73,91 +70,25 @@ public class SiegeMode
         if (getConfig().getInt("SiegeSchedule.startCity" + counter + ".Day")==getDayOfWeek()){
             timeTask(counter, "startCity");
             // log entry for debug purposes mostly
-            log.log(Level.INFO, "[SiegeMode] Nacten zacatek siege pro city" + counter);
+            log.log(Level.INFO, "[SiegeMode] Start of siege event on City" + counter);
         }
       started++;
       counter++;
-    }
-    
+    }    
     counter = 1;
     while (getConfig().contains("SiegeSchedule.endCity" + counter))
     {
         if (getConfig().getInt("SiegeSchedule.endCity" + counter + ".Day")==getDayOfWeek()){
             timeTask(counter, "endCity");
             // log entry for debug purposes mostly
-            log.log(Level.INFO, "[SiegeMode] Nacten konec siege pro city" + counter);
+            log.log(Level.INFO, "[SiegeMode] End of siege event on City" + counter);
         }
         started++;
         counter++;
     }
     log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
   }
-  
-  // OLD (kept for record, delete once done)
-  /*public void startSchedule()
-  {
-    int counter = 1;
-    int started = 0;
-    while (getConfig().contains("SiegeSchedule.startCity" + counter))
-    {
-    	
-      log.log(Level.INFO, "getConfig contains SiegeSchedule.Command{0}", Integer.valueOf(counter));
-      if ((!getConfig().contains("SiegeSchedule.Command" + counter + ".After")) && (!getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)))
-      {
-        log.log(Level.INFO, "[SiegeScheduler] Command{0} does not have an After value, defaulting to 0.", Integer.valueOf(counter));
-        getConfig().set("SiegeSchedule.Command" + counter + ".After", Integer.valueOf(0));
-      }
-      if (getConfig().getBoolean("SiegeSchedule.Command" + counter + ".SpecificTime", false)) {
-        timeTask(counter);
-      } else if (getConfig().getBoolean("SiegeSchedule.Command" + counter + ".Repeat"))
-      {
-        if (!getConfig().contains("SiegeSchedule.Command" + counter + ".Interval")) {
-          log.log(Level.INFO, "[SiegeMode] Command{0} has Repeat: true, but Interval is not set! Ignoring this command.", Integer.valueOf(counter));
-        } else {
-          repeatingTask(counter);
-        }
-      }
-      
-    	
-      timeTask(counter);
-      started++;
-      counter++;
-    }
     
-    counter = 1;
-    while (getConfig().contains("SiegeSchedule.endCity" + counter))
-    {
-    	timeTask(counter);
-        started++;
-        counter++;
-    }
-    log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
-  }
-  
-  public void repeatingTask(final int counter)
-  {
-    getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
-    {
-      public void run()
-      {
-        SiegeMode.this.runCommand(counter);
-      }
-    }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L, getConfig().getInt("SiegeSchedule.Command" + counter + ".Interval") * 20L);
-  }
-  
-  
-  public void nonrepeatingTask(final int counter)
-  {
-    getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-    {
-      public void run()
-      {
-        SiegeMode.this.runCommand(counter);
-      }
-    }, getConfig().getInt("SiegeSchedule.Command" + counter + ".After", 0) * 20L);
-  }
-  */
-  
   public void timeTask(final int counter, final String cityType)
   {
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
@@ -233,7 +164,8 @@ public class SiegeMode
     PluginManager pm = getServer().getPluginManager();
     if (pm.getPlugin("Vault") != null)
     {
-      RegisteredServiceProvider permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
+      @SuppressWarnings("rawtypes")
+	RegisteredServiceProvider permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
       if (permissionProvider != null) {
         permission = (Permission)permissionProvider.getProvider();
       }
@@ -277,8 +209,7 @@ public class SiegeMode
 	  calendar.setFirstDayOfWeek(calendar.getFirstDayOfWeek());
 	  int DayOfTheWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-	  return DayOfTheWeek;	  
-	  
+	  return DayOfTheWeek; 
   }
   
   public String parseDayOfWeek(int DayOfWeek)
