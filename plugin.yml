@@ -1,6 +1,6 @@
 name: SiegeMode
 main: MrInfroGusko.SiegeMode.SiegeMode
-version: 0.1
+version: RC-1.0
 author: MrInfro, Gusko
 
 commands:
