@@ -30,8 +30,9 @@ public class SiegeMode
   public void onEnable()
   {
     setupPermission();
-    getConfig().options().copyDefaults(true);
-    saveConfig();
+    this.saveDefaultConfig();
+    //getConfig().options().copyDefaults(true);
+    //saveConfig();
     getConfig();
     PluginDescriptionFile pdfFile = getDescription();
     log.log(Level.INFO, "[{0}] By MrInfro and Gusko - v{1} enabled.", new Object[] { pdfFile.getName(), pdfFile.getVersion() });
