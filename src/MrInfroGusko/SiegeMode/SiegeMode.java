@@ -86,7 +86,7 @@ public class SiegeMode
         started++;
         counter++;
     }
-    log.log(Level.INFO, "[SiegeMode] has attempted to put {0} commands on schedule.", Integer.valueOf(started));
+    log.log(Level.INFO, "[SiegeMode] has found {0} records.", Integer.valueOf(started));
   }
     
   public void timeTask(final int counter, final String cityType)
