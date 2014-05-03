@@ -120,32 +120,67 @@ public class SiegeMode
         msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "To see a list of commands type: /sm help", new Object[0]);
         return true;
       }
-      if (!hasPerm(sender, "SiegeMode.use"))
-      {
-        msg(sender, ChatColor.RED + "You don't have permission to use this command", new Object[0]);
-        return true;
-      }
-      if (args[0].equalsIgnoreCase("reload"))
+// commented as we want anyone to use most options, kept here for informational purposes
+//      if (!hasPerm(sender, "SiegeMode.use"))
+//      {
+//        msg(sender, ChatColor.RED + "You don't have permission to use this command", new Object[0]);
+//        return true;
+//      }
+      if (args[0].equalsIgnoreCase("reload") && hasPerm(sender, "SiegeMode.use"))
       {
         msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "Reloding...", new Object[0]);
         reloadConfig();
         msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.GREEN + "Reloaded config file!", new Object[0]);
         return true;
       }
-    }
-    if (!hasPerm(sender, "SiegeMode.use"))
-    {
-      msg(sender, ChatColor.RED + "You don't have permission to use this command", new Object[0]);
-      return true;
-    }
+//    if (!hasPerm(sender, "SiegeMode.use"))
+//    {
+//      msg(sender, ChatColor.RED + "You don't have permission to use this command", new Object[0]);
+//      return true;
+//    }
+	if (args[0].equalsIgnoreCase("siege"))
+	{
+	msg(sender, ChatColor.RED + "[SiegeMode]" + ChatColor.GREEN + "List of cities & sieges", new Object[0]);
+	int counter = 1;
+    while (getConfig().contains("SiegeSchedule.startCity" + counter))
+    {    
+                String CityName = getConfig().getString("SiegeSchedule.startCity" + counter + ".CityName");
+                String Day = parseDayOfWeek(getConfig().getInt("SiegeSchedule.startCity" + counter + ".Day"));
+                int Hour = getConfig().getInt("SiegeSchedule.startCity" + counter + ".Hour");
+                int Minute = getConfig().getInt("SiegeSchedule.startCity" + counter + ".Minute");
+		msg(sender, ChatColor.WHITE + CityName + " " + Day + " " + Hour + " " + Minute,new Object[0]);
+		counter++;
+    }    
+	}
     if (args[0].equalsIgnoreCase("help"))
     {
       msg(sender, ChatColor.RED + "[SiegeMode] " + ChatColor.WHITE + "Commands:", new Object[] { desc.getVersion() });
-      msg(sender, ChatColor.WHITE + "* /sm reload", new Object[0]);
+      msg(sender, ChatColor.WHITE + "* /sm siege - displays list of cities and their siege times", new Object[0]);
+      msg(sender, ChatColor.WHITE + "* (admin only) /sm reload", new Object[0]);
+      msg(sender, ChatColor.WHITE + "* (admin only) /sm setSiege cityNumber hour minute", new Object[0]);
       return true;
     }
+	if ((args[0].equalsIgnoreCase("setSiege"))&&(!hasPerm(sender, "SiegeMode.use")))
+	  {
+	  
+	  //validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
+	  if ((!args[1].isEmpty() || !args[2].isEmpty())||!args[3].isEmpty())
+            {
+                
+                //ani kokot nevi jak je ten setConfig... az budu vedet dodelam to.
+                log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
+                return true; 
+            }
+          else
+          {
+            msg(sender, ChatColor.RED + "[SiegeMode] u fail!");
+			log.log(Level.INFO, "[SiegeMode] siege time input fail on primary args check");
+            return false;
+          }
+	  }
+    }
     return false;
-  }
+    }
   
   private boolean hasPerm(CommandSender sender, String perm)
   {
