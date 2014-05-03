@@ -5,6 +5,7 @@ SiegeSchedule:
     Hour: 21
     Minute: 30
     Second: 0
+    CityName: Yorend
     Command1: say Siege on City1 starts now!
     Command2: say placeholder
   endCity1:  
