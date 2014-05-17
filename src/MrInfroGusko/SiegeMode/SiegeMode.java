@@ -162,22 +162,29 @@ public class SiegeMode
     }
 	if ((args[0].equalsIgnoreCase("setSiege"))&&(!hasPerm(sender, "SiegeMode.use")))
 	  {
-	  
-	  //validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
-	  if ((!args[1].isEmpty() || !args[2].isEmpty())||!args[3].isEmpty())
-            {
-                
-                //ani kokot nevi jak je ten setConfig... az budu vedet dodelam to.
+
+		//validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
+		//POZOR nez zmaknu prechody do dalsiho dne, musime mit ENUM od 0.00 do 21.59 (2 hodiny do pulnoci)
+		if ((!args[1].isEmpty() || !args[2].isEmpty())||!args[3].isEmpty())
+            	{
+			try {
+                getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", args[2]);
+				getConfig().set("SiegeSchedule.startCity" + args[1] + ".Minute", args[3]);
                 log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
-                return true; 
-            }
-          else
-          {
-            msg(sender, ChatColor.RED + "[SiegeMode] u fail!");
-			log.log(Level.INFO, "[SiegeMode] siege time input fail on primary args check");
+                return true;
+				this.saveConfig();
+				this.reloadConfig();
+				} catch (IOException ex) {
+					getLogger().log(Level.SEVERE, "[SIEGEMODE] se to komplet umrelo na setConfig", ex);
+				}
+            	}
+        	  else
+	          {
+            	msg(sender, ChatColor.RED + "[SiegeMode] u fail!");
+		log.log(Level.INFO, "[SiegeMode] siege time input fail on primary args check");
             return false;
           }
-	  }
+	}
     }
     return false;
     }
