@@ -168,15 +168,18 @@ public class SiegeMode
 		if ((!args[1].isEmpty() || !args[2].isEmpty())||!args[3].isEmpty())
             	{
 			try {
-                getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", args[2]);
+                		getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", args[2]);
 				getConfig().set("SiegeSchedule.startCity" + args[1] + ".Minute", args[3]);
-                log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
-                return true;
+				int endHour = (getInt(args[2]))+2;
+				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Hour", endHour);
+				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Minute", args[3]);
+                		log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
+                		return true;
 				this.saveConfig();
 				this.reloadConfig();
-				} catch (IOException ex) {
-					getLogger().log(Level.SEVERE, "[SIEGEMODE] se to komplet umrelo na setConfig", ex);
-				}
+			} catch (IOException ex) {
+				getLogger().log(Level.SEVERE, "[SIEGEMODE] se to komplet umrelo na setConfig", ex);
+			}
             	}
         	  else
 	          {
