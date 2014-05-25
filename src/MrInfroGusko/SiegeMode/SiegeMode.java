@@ -161,6 +161,7 @@ public class SiegeMode
       return true;
     }
 	if ((args[0].equalsIgnoreCase("setSiege"))&&(hasPerm(sender, "SiegeMode.use")))
+		if ((args[0].equalsIgnoreCase("setSiege"))&&(hasPerm(sender, "SiegeMode.use")))
 	  {
 
 		//validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
@@ -168,23 +169,24 @@ public class SiegeMode
 		if ((!args[1].isEmpty() || !args[2].isEmpty())||!args[3].isEmpty())
             	{
 			try {
-                		getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", args[2]);
-				getConfig().set("SiegeSchedule.startCity" + args[1] + ".Minute", args[3]);
-				string endHour = Integer.toString((parseInt(args[2]))+2);
-				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Hour", endHour);
-				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Minute", args[3]);
-                		log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
+                		getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", Integer.parseInt(args[2]));
+				getConfig().set("SiegeSchedule.startCity" + args[1] + ".Minute", Integer.parseInt(args[3]));
+				//int endHour = Integer.parseInt(args[2])+2;
+				//String endHour = Integer.toString((parseInt(args[3]))+2);
+				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Hour", Integer.parseInt(args[2])+2);
+				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Minute", Integer.parseInt(args[3]));
+                		log.log(Level.INFO, "[SiegeMode] Time of siege was changed for City" + Integer.parseInt(args[1]));
 				this.saveConfig();
 				this.reloadConfig();
 				return true;
-			} catch (IOException ex) {
+			} catch (Exception ex) {
 				getLogger().log(Level.SEVERE, "[SIEGEMODE] se to komplet umrelo na setConfig", ex);
 			}
             	}
         	  else
 	          {
-            	msg(sender, ChatColor.RED + "[SiegeMode] u fail!");
-		log.log(Level.INFO, "[SiegeMode] siege time input fail on primary args check");
+            		msg(sender, ChatColor.RED + "[SiegeMode] u fail!", new Object[0]);
+            		log.log(Level.INFO, "[SiegeMode] siege time input fail on primary args check");
             return false;
           }
 	}
