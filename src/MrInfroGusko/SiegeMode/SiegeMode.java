@@ -160,7 +160,7 @@ public class SiegeMode
       msg(sender, ChatColor.WHITE + "* (admin only) /sm setSiege cityNumber hour minute", new Object[0]);
       return true;
     }
-	if ((args[0].equalsIgnoreCase("setSiege"))&&(!hasPerm(sender, "SiegeMode.use")))
+	if ((args[0].equalsIgnoreCase("setSiege"))&&(hasPerm(sender, "SiegeMode.use")))
 	  {
 
 		//validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
@@ -170,13 +170,13 @@ public class SiegeMode
 			try {
                 		getConfig().set("SiegeSchedule.startCity" + args[1] + ".Hour", args[2]);
 				getConfig().set("SiegeSchedule.startCity" + args[1] + ".Minute", args[3]);
-				int endHour = (getInt(args[2]))+2;
+				string endHour = Integer.toString((parseInt(args[2]))+2);
 				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Hour", endHour);
 				getConfig().set("SiegeSchedule.endCity" + args[1] + ".Minute", args[3]);
                 		log.log(Level.INFO, "[SiegeMode] siege time is changed for city" + args[1]);
-                		return true;
 				this.saveConfig();
 				this.reloadConfig();
+				return true;
 			} catch (IOException ex) {
 				getLogger().log(Level.SEVERE, "[SIEGEMODE] se to komplet umrelo na setConfig", ex);
 			}
