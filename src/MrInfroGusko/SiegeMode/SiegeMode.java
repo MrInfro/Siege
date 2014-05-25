@@ -161,7 +161,6 @@ public class SiegeMode
       return true;
     }
 	if ((args[0].equalsIgnoreCase("setSiege"))&&(hasPerm(sender, "SiegeMode.use")))
-		if ((args[0].equalsIgnoreCase("setSiege"))&&(hasPerm(sender, "SiegeMode.use")))
 	  {
 
 		//validace zda tam vubec sou hodnoty... zatim se nekontroluje co za picoviny sou tam napsane ale bude
